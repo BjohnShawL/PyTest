@@ -71,4 +71,6 @@ class insertUserHandler(tornado.web.RequestHandler):
         cur.execute(_query,(_firstname,_lastname,_timenow))
         conn.commit()
 
-        self.write("Submitted correctly")
+        cur.close()
+        conn.close
+        self.redirect("/users")
