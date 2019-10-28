@@ -6,6 +6,7 @@ import json
 import datetime
 
 from connector import Connector
+from resultsService import ResultsService
 
 class rootRequestHandler(tornado.web.RequestHandler):
     def get(self):
@@ -14,6 +15,8 @@ class rootRequestHandler(tornado.web.RequestHandler):
 
 class allUsersHandler(tornado.web.RequestHandler):
     def get(self):
+        #create resultService object
+        _resultsService = ResultsService()
 
         # create connection to postgres database
         _connector = Connector()
@@ -22,9 +25,10 @@ class allUsersHandler(tornado.web.RequestHandler):
         # create cursor
         cur = conn.cursor()
 
-        cur.execute("select * from public.users LIMIT(100)")
+        cur.execute("select firstname, lastname, created_on::VARCHAR(255) from public.users LIMIT(100)")
         _result = cur.fetchall()
-        self.render("testInsert.html", result=_result)
+        _result_to_json = _resultsService.parse(_result)
+        self.render("testInsert.html", result=_result_to_json)
         cur.close()
         conn.close()
 
@@ -52,7 +56,7 @@ class insertUserHandler(tornado.web.RequestHandler):
 
         # create cursor
         cur = conn.cursor()
-        cur.execute("select * from public.users where id = 1")
+        cur.execute("select firstname, lastname, created_on::VARCHAR(255) from public.users LIMIT(100)")
         _result = cur.fetchall()
         self.render("testInsert.html",result=_result)
     def post(self):
