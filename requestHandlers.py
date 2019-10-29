@@ -7,6 +7,7 @@ import datetime
 
 from connector import Connector
 from resultsService import ResultsService
+from queries import Queries
 
 class rootRequestHandler(tornado.web.RequestHandler):
     def get(self):
@@ -60,6 +61,8 @@ class insertUserHandler(tornado.web.RequestHandler):
         _result = cur.fetchall()
         self.render("testInsert.html",result=_result)
     def post(self):
+        #load queries
+        q= Queries()
         # create connection to postgres database
         _connector = Connector()
         conn = _connector.connect()
@@ -71,7 +74,8 @@ class insertUserHandler(tornado.web.RequestHandler):
         _firstname = self.get_argument("_firstname_field")
         _lastname = self.get_argument("_lastname_field")
         _timenow = datetime.datetime.now()
-        _query = "INSERT INTO public.users(firstname, lastname, created_on) VALUES (%s,%s,%s)"
+        # _query = "INSERT INTO public.users(firstname, lastname, created_on) VALUES (%s,%s,%s)"
+        _query = q._create_new_user
         cur.execute(_query,(_firstname,_lastname,_timenow))
         conn.commit()
 
