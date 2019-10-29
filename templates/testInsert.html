@@ -23,7 +23,12 @@
         <ul>
             {% for row in result %}
             <li>
-                {{ row[0] }}  {{ row[1]}}
+                <form action = "/delete" method="POST">
+                    {% module xsrf_form_html() %}
+                    <input type="checkbox" name ={{row[3]}}>
+                    {{ row[0] }}  {{ row[1]}}
+                    
+                </form>
             </li>
             {% end %}
         </ul>
