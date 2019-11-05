@@ -15,6 +15,7 @@ class rootRequestHandler(tornado.web.RequestHandler):
 
 class allUsersHandler(tornado.web.RequestHandler):
     def get(self):
+# Region Set Up
         #create resultService object
         _resultsService = ResultsService()
         q= Queries()
@@ -25,7 +26,7 @@ class allUsersHandler(tornado.web.RequestHandler):
 
         # create cursor
         cur = conn.cursor()
-
+# endregion
         cur.execute(q._get_all_users)
         _result = cur.fetchall()
         _result_to_json = _resultsService.parse(_result)
@@ -33,21 +34,33 @@ class allUsersHandler(tornado.web.RequestHandler):
         cur.close()
         conn.close()
 
-class externalRequestHandler(tornado.web.RequestHandler):
-    def get(self):
-
-        # create connection to postgres database
+class deleteUserHandler(tornado.web.RequestHandler):
+    def post(self):
+# Region Set Up
+        _resultsService = ResultsService()
+        _q = Queries()
         _connector = Connector()
         conn = _connector.connect()
-
-        # create cursor
         cur = conn.cursor()
+# endregion
 
-        cur.execute("select * from public.users LIMIT(100)")
+# Region Main Block
+        cur.execute(_q._get_all_users)
         _result = cur.fetchall()
-        self.render("testInsert.html", result=_result)
+        _result_to_json = _resultsService.parse(_result)
+
+        
+        for item in _result:
+            _rID = str(item[3])
+            _id = self.get_arguments("_checkbox")
+            if _rID in _id:
+                print("Deleting "+str(item[0]))
+                cur.execute(_q._delete_user,(item[3],))
+                conn.commit()
+
         cur.close()
         conn.close()
+        self.redirect("/users")
 
 class insertUserHandler(tornado.web.RequestHandler):
     def get(self):
@@ -62,6 +75,8 @@ class insertUserHandler(tornado.web.RequestHandler):
         self.render("testInsert.html",result=_result)
     
     def post(self):
+# Region Set Up
+        
         #create resultService object
         _resultsService = ResultsService()
         #load queries
@@ -77,7 +92,8 @@ class insertUserHandler(tornado.web.RequestHandler):
         _firstname = self.get_argument("_firstname_field")
         _lastname = self.get_argument("_lastname_field")
         _timenow = datetime.datetime.now()
-        
+
+# endregion
         #main block 
         
         _query = q._get_all_users

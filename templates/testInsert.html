@@ -20,17 +20,21 @@
             <button type="submit" value="Send">Initiate Doomsday Protocol</button>
         </p>
         </form>
+        <form action = "/delete" method="POST">
+        {% module xsrf_form_html() %}
         <ul>
             {% for row in result %}
             <li>
-                <form action = "/delete" method="POST">
-                    {% module xsrf_form_html() %}
-                    <input type="checkbox" name ={{row[3]}}>
-                    {{ row[0] }}  {{ row[1]}}
+                
                     
-                </form>
+                    <input type="checkbox" name = "_checkbox" value ={{row[3]}} /> 
+                    {{ row[0] }}  {{ row[1]}}
+
+                
             </li>
             {% end %}
         </ul>
+        <button type="submit" value="Send">DELETE</button>
+        </form>
 </body>
 </html>

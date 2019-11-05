@@ -11,6 +11,7 @@ import uimodules
 from requestHandlers import allUsersHandler
 from requestHandlers import rootRequestHandler
 from requestHandlers import insertUserHandler
+from requestHandlers import deleteUserHandler
 
 def main():
 # configure webapp
@@ -30,7 +31,8 @@ def main():
     app = tornado.web.Application([
         (r"/", rootRequestHandler),
         (r"/insert",insertUserHandler),
-        (r"/users",allUsersHandler)
+        (r"/users",allUsersHandler),
+        (r"/delete",deleteUserHandler)
     ], **settings)
 
     http_server = tornado.httpserver.HTTPServer(app)
