@@ -12,6 +12,7 @@ from requestHandlers import allUsersHandler
 from requestHandlers import rootRequestHandler
 from requestHandlers import insertUserHandler
 from requestHandlers import deleteUserHandler
+from requestHandlers import ShipClassHandler
 
 def main():
 # configure webapp
@@ -32,7 +33,8 @@ def main():
         (r"/", rootRequestHandler),
         (r"/insert",insertUserHandler),
         (r"/users",allUsersHandler),
-        (r"/delete",deleteUserHandler)
+        (r"/delete",deleteUserHandler),
+        (r"/ships_c",ShipClassHandler)
     ], **settings)
 
     http_server = tornado.httpserver.HTTPServer(app)

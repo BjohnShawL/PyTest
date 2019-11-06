@@ -14,9 +14,10 @@ class ResultsService:
 
     def save(self,results):
         now = datetime.datetime.now()
-        path = os.path.expanduser(r'~\Documents')
-        timenow = now.strftime("%d%m%Y_%H_%M")
+        _path = os.path.expanduser(r'~\Documents')
+        timenow = now.strftime("%d%m%Y_%H_%M_%S")
         name = timenow + ".json"
-        filename = path + '\\' + name
+        filename = _path + '\\' + name
         with open(filename, 'w') as outfile:
             json.dump(results, outfile)
+

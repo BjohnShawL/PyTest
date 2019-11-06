@@ -42,6 +42,7 @@ class deleteUserHandler(tornado.web.RequestHandler):
         _connector = Connector()
         conn = _connector.connect()
         cur = conn.cursor()
+ 
 # endregion
 
 # Region Main Block
@@ -57,6 +58,7 @@ class deleteUserHandler(tornado.web.RequestHandler):
                 print("Deleting "+str(item[0]))
                 cur.execute(_q._delete_user,(item[3],))
                 conn.commit()
+
 
         cur.close()
         conn.close()
@@ -110,3 +112,52 @@ class insertUserHandler(tornado.web.RequestHandler):
         self.redirect("/users")
 
 
+class ShipClassHandler(tornado.web.RequestHandler):
+    def get(self):
+        _q = Queries()
+        _resultsService = ResultsService()
+        # create connection to postgres database
+        _connector = Connector()
+        conn = _connector.connect()
+
+        # create cursor
+        cur = conn.cursor()
+        cur.execute(_q._get_all_ship_classes)
+        _result = cur.fetchall()
+        _result_to_json = _resultsService.parse(_result)
+        self.render("shipClass.html",result=_result)
+    
+    def post(self):
+# Region Set Up
+        
+        #create resultService object
+        _resultsService = ResultsService()
+        #load queries
+        q= Queries()
+        # create connection to postgres database
+        _connector = Connector()
+        conn = _connector.connect()
+
+        # create cursor
+        cur = conn.cursor()
+
+        #define query parameters
+        _firstname = self.get_argument("_firstname_field")
+        _lastname = self.get_argument("_lastname_field")
+        _timenow = datetime.datetime.now()
+
+# endregion
+        #main block 
+        
+        _query = q._get_all_users
+        cur.execute(_query)
+        _result = cur.fetchall()
+        _result_to_json = _resultsService.parse(_result)
+
+        _query = q._create_new_user
+        cur.execute(_query,(_firstname,_lastname,_timenow))
+        conn.commit()
+
+        cur.close()
+        conn.close
+        self.redirect("/users")
