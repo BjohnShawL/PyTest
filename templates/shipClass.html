@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ship Class</title>
+</head>
+<body>
+    {% module NavigationHeader() %}
+
+    <H1>Ship Class Listing</H1>
+    <h3>Available ships classes for round-trips</h3>
+
+    <table style="width: 35%;">
+        <tr>
+            <th><u>Class</u></Class></th>
+            <th><u>Passenger Capacity</u></th>
+            <th><u>Fuel Capacity</u></th>
+            <th><u>Crew Size</u></th>
+        </tr>
+        {% for row in result %}
+        <tr>
+            <th><h6>{{row[1]}}</h6></th>
+            <th><h6>{{row[4]}}</h6></th>
+            <th><h6>{{row[2]}}</h6></th>
+            <th><h6>{{row[3]}}</h6></th>
+        </tr>
+        {% end %}
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+    "all_users":"select firstname, lastname, created_on::VARCHAR(255) from public.users LIMIT(100)",
+    "create_user":"INSERT INTO public.users(firstname, lastname, created_on) VALUES (%s,%s,%s)",
+    "multi_line":"select firstname, lastname, created_on::VARCHAR(255) from public.users LIMIT(100);INSERT INTO public.users(firstname, lastname, created_on) VALUES (%s,%s,%s);select firstname, lastname, created_on::VARCHAR(255) from public.users LIMIT(100)"
+}
