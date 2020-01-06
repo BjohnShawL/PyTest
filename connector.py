@@ -1,6 +1,9 @@
 import psycopg2
 import psycopg2.extras
 import json
+import pyravendb
+
+from pyravendb.store import document_store
 
 
 class Connector(object):
@@ -30,6 +33,15 @@ class Connector(object):
 
         )
         return conn
+
+    def r_connect(self):
+        store = document_store.DocumentStore(urls="http://localhost:13518",database="billing")
+        store.initialize()
+        session = store.open_session(database="billing")
+        
+
+        return session
+
 
     def PyTestConnect(self):
         pgconfig = Connector._data['local']

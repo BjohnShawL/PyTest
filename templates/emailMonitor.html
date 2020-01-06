@@ -11,6 +11,11 @@
 
     <form action="/efail" method="POST">
         {% module xsrf_form_html() %}
+
+    <p>
+        <label>Failure Id</label>
+        <input type="text" name="_failureId">
+    </p>
     <p>
         <label>Failure Id</label>
         <input type="text" name="_failureId">

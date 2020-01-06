@@ -8,10 +8,17 @@ import datetime
 from connector import Connector
 from resultsService import ResultsService
 from queries import Queries
+from Models.timesheetModel import *
 
 class rootRequestHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
+        conn = Connector()
+        session = conn.r_connect()
+        test = session.query(object_type=Timesheet).where_in("NumericID",[1800,1799])
+        for ts in test:
+            print(ts.tsStatus)
+        
 
 class allUsersHandler(tornado.web.RequestHandler):
     def get(self):
