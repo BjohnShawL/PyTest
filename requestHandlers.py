@@ -190,17 +190,23 @@ class EmailFailHandler(tornado.web.RequestHandler):
         cur = conn.cursor()
 
         #define query parameters
-        _failID = self.get_argument("_failureId")
+        _failIDs = self.get_arguments("_failureId")
         
 # endregion
 # Region main block 
-        
-        
-        cur.execute(q._email_failure,(_failID,))
-        _result = cur.fetchall()
-        _result_to_json = _resultsService.parse(_result)
+        results = []
 
-        self.render("emailMonitor.html",results=_result)
+        for _failID in _failIDs:
+            if _failID :
+                cur.execute(q._email_failure,(_failID,))
+                _uResult = cur.fetchall()
+                results.append(*_uResult)
+            else:
+                continue
+        #_result.add(cur.fetchall())
+        _result_to_json = _resultsService.parse(results)
+
+        self.render("emailMonitor.html",results=results)
 
         cur.close()
         conn.close

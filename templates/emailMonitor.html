@@ -5,28 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Email Monitor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="{{ static_url("scripts/add_input.js") }}"></script>
 </head>
 <body>
     {% module NavigationHeader() %}
 
-    <form action="/efail" method="POST">
+    <form action="/efail" method="POST" id="failForm">
         {% module xsrf_form_html() %}
+        <p><button type="button" onclick="add()"><i class="fa fa-plus-circle" aria-hidden="true"></i></button></p>
 
     <p>
         <label>Failure Id</label>
         <input type="text" name="_failureId">
+
     </p>
-    <p>
-        <label>Failure Id</label>
-        <input type="text" name="_failureId">
-    </p>
-    <p>
-        <button type="submit" value="Send">Check Id</button>
-    </p>
+    
+    
+    <button type="submit" value="Send" id="submitBtn">Check Id</button>
+    
     </form>
+
+    <br>
+    <br>
 
     <table style="width: 35%;">
         <tr>
+            <th><u>Date : Time</u></th>
             <th><u>Subject</u></th>
             <th><u>Recipient</u></th>
             
@@ -38,6 +43,7 @@
                     <tr>
                         <th><h5>{{result[0]}}</h5></th>
                         <th><h5>{{result[1]}}</h5></th>
+                        <th><h5>{{result[2]}}</h5></th>
                         
                     </tr>
                 {% end %}
